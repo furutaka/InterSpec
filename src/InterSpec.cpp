@@ -873,25 +873,6 @@ std::string InterSpec::staticDataDirectory()
   return sm_staticDataDirectory;
 }
 
-#if( BUILD_AS_ELECTRON_APP || IOS || ANDROID || BUILD_AS_OSX_APP || (BUILD_AS_LOCAL_SERVER && (defined(WIN32) || defined(__APPLE__)) ) )
-void InterSpec::setWritableDataDirectory( const std::string &dir )
-{
-  std::lock_guard<std::mutex> lock( sm_writableDataDirectoryMutex );
-  
-  if( !dir.empty() && !UtilityFunctions::is_directory(dir) )
-    throw runtime_error( "InterSpec::setWritableDataDirectory(): " + dir + " is not a directory." );
-  
-  //Set the serial to module database file, if the user has one in thier
-  //  application data directory.
-  //Currently this is being done in the target specific code; it should all be
-  //  moved here, or really in ResourceUpdate tool if that ever gets implemented.
-  //const vector<string> serial_db = UtilityFunctions::ls_files_in_directory( dir, "serial_to_model.csv" );
-  //if( !serial_db.empty() )
-  //  SerialToDetectorModel::set_detector_model_input_csv( serial_db[0] );
-  
-  sm_writableDataDirectory = dir;
-}//setWritableDataDirectory( const std::string &dir )
-
 
 
 void InterSpec::update_displayed_spectrum_from_daq( std::shared_ptr<const Measurement> foreground,
@@ -972,6 +953,27 @@ void InterSpec::update_displayed_spectrum_from_daq( std::shared_ptr<const Measur
     m_spectrum->setXAxisRange( old_min_energy, old_max_energy );
   
 }//update_displayed_spectrum_from_daq()
+
+
+
+#if( BUILD_AS_ELECTRON_APP || IOS || ANDROID || BUILD_AS_OSX_APP || (BUILD_AS_LOCAL_SERVER && (defined(WIN32) || defined(__APPLE__)) ) )
+void InterSpec::setWritableDataDirectory( const std::string &dir )
+{
+  std::lock_guard<std::mutex> lock( sm_writableDataDirectoryMutex );
+  
+  if( !dir.empty() && !UtilityFunctions::is_directory(dir) )
+    throw runtime_error( "InterSpec::setWritableDataDirectory(): " + dir + " is not a directory." );
+  
+  //Set the serial to module database file, if the user has one in thier
+  //  application data directory.
+  //Currently this is being done in the target specific code; it should all be
+  //  moved here, or really in ResourceUpdate tool if that ever gets implemented.
+  //const vector<string> serial_db = UtilityFunctions::ls_files_in_directory( dir, "serial_to_model.csv" );
+  //if( !serial_db.empty() )
+  //  SerialToDetectorModel::set_detector_model_input_csv( serial_db[0] );
+  
+  sm_writableDataDirectory = dir;
+}//setWritableDataDirectory( const std::string &dir )
 
 
 
