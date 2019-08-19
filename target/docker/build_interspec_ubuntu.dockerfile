@@ -6,8 +6,8 @@ ADD . /interspec
 #      container to run mysql too.
 
 RUN cd /tmp && mkdir build_interspec && cd build_interspec \
-&& cmake -DCMAKE_BUILD_TYPE="Debug" -DBUILD_FOR_WEB_DEPLOYMENT=ON -DENABLE_RESOURCE_UPDATES=OFF \
-         -DBUILD_AS_LOCAL_SERVER=OFF -DUSE_SPECRUM_FILE_QUERY_WIDGET=OFF -DTRY_TO_STATIC_LINK=ON \
+&& cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_FOR_WEB_DEPLOYMENT=OFF -DENABLE_RESOURCE_UPDATES=OFF \
+         -DBUILD_AS_LOCAL_SERVER=ON -DUSE_SPECRUM_FILE_QUERY_WIDGET=OFF -DTRY_TO_STATIC_LINK=ON \
          /interspec \
 && make -j4
 
